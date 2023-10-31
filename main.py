@@ -118,9 +118,108 @@ def modificarusuario(id):
 
 @app.route("/usuario/<string:id>", methods=['DELETE'])
 def eliminarusuario(id):
+    data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-coffe"] + '/usuario/' + id
-    response = requests.delete(url, headers=headers)
+    response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+##redireccionamiento a finca
+
+
+@app.route("/fincas", methods=['GET'])
+def getfincas():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/fincas'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/finca", methods=['POST'])
+def crearfinca():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/finca'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/finca/<string:id>", methods=['GET'])
+def getfinca(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/finca/' + id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/finca/<string:id>", methods=['PUT'])
+def modificarfinca(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/finca/' + id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/finca/<string:id>", methods=['DELETE'])
+def eliminarfinca(id):
+    url = dataConfig["url-backend-coffe"] + '/finca/' + id
+    response = requests.delete(url)
+    json = response.json()
+    return jsonify(json)
+
+###lote###
+
+
+@app.route("/lotes", methods=['GET'])
+def getlotes():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/lotes'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/lote/", methods=['POST'])
+def crearlote():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/lote/'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/lote/<string:id>", methods=['GET'])
+def getlote(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/lote/' + id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/lote/<string:id>", methods=['PUT'])
+def modificarlote(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/lote/' + id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/lote/<string:id>", methods=['DELETE'])
+def eliminarlote(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/lote/' + id
+    response = requests.delete(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
 
