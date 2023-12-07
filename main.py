@@ -223,6 +223,56 @@ def eliminarlote(id):
     json = response.json()
     return jsonify(json)
 
+###cafe###
+
+
+@app.route("/cafes", methods=['GET'])
+def getcafes():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cafes'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cafe/", methods=['POST'])
+def crearcafe():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cafe/'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cafe/<string:id>", methods=['GET'])
+def getcafe(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cafe/<string:id>", methods=['PUT'])
+def modificarcafe(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cafe/<string:id>", methods=['DELETE'])
+def eliminarcafe(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
 
 @app.route("/", methods=['GET'])
 def test():
