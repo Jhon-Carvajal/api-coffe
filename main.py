@@ -3,6 +3,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask_cors import CORS
+##from keras.models import load_model
 import json
 from waitress import serve
 import datetime
@@ -270,6 +271,46 @@ def eliminarcafe(id):
     headers = {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-coffe"] + '/cafe/' + id
     response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+###imagen###
+
+
+@app.route("/imagenes", methods=['GET'])
+def imagenes():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/imagenes'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/crearimagen/", methods=['POST'])
+def crearimagen():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/crearimagen/'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/modificarimagen/<string:id>", methods=['PUT'])
+def modificarimagen(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/modificarimagen/' + id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/imagen/<string:id>", methods=['GET'])
+def imagen(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/imagen/' + id
+    response = requests.get(url, headers=headers)
     json = response.json()
     return jsonify(json)
 
