@@ -174,7 +174,7 @@ def eliminarfinca(id):
     json = response.json()
     return jsonify(json)
 
-###lote###
+###lote y variedad de cafe ###
 
 
 @app.route("/lotes", methods=['GET'])
@@ -224,52 +224,52 @@ def eliminarlote(id):
     json = response.json()
     return jsonify(json)
 
-###cafe###
+###nutricion pagina 2###
 
 
-@app.route("/cafes", methods=['GET'])
-def getcafes():
+@app.route("/nutriciones", methods=['GET'])
+def getnutriciones():
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cafes'
+    url = dataConfig["url-backend-coffe"] + '/nutriciones'
     response = requests.get(url, headers=headers)
     json = response.json()
     return jsonify(json)
 
 
-@app.route("/cafe/", methods=['POST'])
-def crearcafe():
+@app.route("/nutricion/", methods=['POST'])
+def crearnutricion():
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cafe/'
+    url = dataConfig["url-backend-coffe"] + '/nutricion/'
     response = requests.post(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
 
 
-@app.route("/cafe/<string:id>", methods=['GET'])
-def getcafe(id):
+@app.route("/nutricion/<string:id>", methods=['GET'])
+def getnutricion(id):
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
     response = requests.get(url, headers=headers)
     json = response.json()
     return jsonify(json)
 
 
-@app.route("/cafe/<string:id>", methods=['PUT'])
-def modificarcafe(id):
+@app.route("/nutricion/<string:id>", methods=['PUT'])
+def modificarnutricion(id):
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
     response = requests.put(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
 
 
-@app.route("/cafe/<string:id>", methods=['DELETE'])
-def eliminarcafe(id):
+@app.route("/nutricion/<string:id>", methods=['DELETE'])
+def eliminarnutricion(id):
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cafe/' + id
+    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
     response = requests.delete(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
@@ -314,6 +314,15 @@ def imagen(id):
     json = response.json()
     return jsonify(json)
 
+
+@app.route("/imagen/<string:id>", methods=['DELETE'])
+def eliminarimagen(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/imagen/' + id
+    response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
 
 @app.route("/", methods=['GET'])
 def test():
