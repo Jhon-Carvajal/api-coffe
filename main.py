@@ -224,8 +224,6 @@ def eliminarlote(id):
     json = response.json()
     return jsonify(json)
 
-###nutricion pagina 2###
-
 
 @app.route("/nutriciones", methods=['GET'])
 def getnutriciones():
@@ -267,10 +265,8 @@ def modificarnutricion(id):
 
 @app.route("/nutricion/<string:id>", methods=['DELETE'])
 def eliminarnutricion(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
-    response = requests.delete(url, headers=headers, json=data)
+    response = requests.delete(url)
     json = response.json()
     return jsonify(json)
 
@@ -285,11 +281,11 @@ def getfumigaciones():
     return jsonify(json)
 
 
-@app.route("/nutricion/", methods=['POST'])
+@app.route("/fumigacion", methods=['POST'])
 def crearfumigacion():
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fumigacion/'
+    url = dataConfig["url-backend-coffe"] + '/fumigacion'
     response = requests.post(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
@@ -315,11 +311,9 @@ def modificarfumigacion(id):
 
 
 @app.route("/fumigacion/<string:id>", methods=['DELETE'])
-def eliminarfumigacioncion(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
+def eliminarfumigacion(id):
     url = dataConfig["url-backend-coffe"] + '/fumigacion/' + id
-    response = requests.delete(url, headers=headers, json=data)
+    response = requests.delete(url)
     json = response.json()
     return jsonify(json)
 ###imagen###
@@ -371,6 +365,7 @@ def eliminarimagen(id):
     response = requests.delete(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
+
 
 @app.route("/", methods=['GET'])
 def test():
