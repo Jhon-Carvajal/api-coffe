@@ -30,7 +30,7 @@ def create_token():
         user = response.json()
         expires = datetime.timedelta(seconds=60 * 60 * 24)
         access_token = create_access_token(identity=user, expires_delta=expires)
-        return jsonify({"token": access_token, "user_id": user["_id"]})
+        return jsonify({"token": access_token, "user_id": user["_id"], "nombre": user["nombre"], "apellidos": user["apellidos"]})
     else:
         return jsonify({"invalido": "usuario o contraseña incorrecto"}), 401
 
@@ -186,11 +186,11 @@ def getlotes():
     return jsonify(json)
 
 
-@app.route("/lote/", methods=['POST'])
+@app.route("/lote", methods=['POST'])
 def crearlote():
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lote/'
+    url = dataConfig["url-backend-coffe"] + '/lote'
     response = requests.post(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
@@ -234,11 +234,11 @@ def getnutriciones():
     return jsonify(json)
 
 
-@app.route("/nutricion/", methods=['POST'])
+@app.route("/nutricion", methods=['POST'])
 def crearnutricion():
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/nutricion/'
+    url = dataConfig["url-backend-coffe"] + '/nutricion'
     response = requests.post(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
@@ -328,11 +328,11 @@ def imagenes():
     return jsonify(json)
 
 
-@app.route("/crearimagen/", methods=['POST'])
+@app.route("/crearimagen", methods=['POST'])
 def crearimagen():
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/crearimagen/'
+    url = dataConfig["url-backend-coffe"] + '/crearimagen'
     response = requests.post(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
