@@ -30,7 +30,9 @@ def create_token():
         user = response.json()
         expires = datetime.timedelta(seconds=60 * 60 * 24)
         access_token = create_access_token(identity=user, expires_delta=expires)
-        return jsonify({"token": access_token, "user_id": user["_id"], "nombre": user["nombre"], "apellidos": user["apellidos"]})
+        return jsonify({"token": access_token, "user_id": user["_id"], "nombre": user["nombre"],
+                        "apellidos": user["apellidos"],
+                        "correo": user["correo"]})
     else:
         return jsonify({"invalido": "usuario o contraseña incorrecto"}), 401
 
@@ -225,6 +227,59 @@ def eliminarlote(id):
     return jsonify(json)
 
 
+###cosecha del lote ###
+
+
+@app.route("/cosechas", methods=['GET'])
+def getcosechas():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cosechas'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cosecha", methods=['POST'])
+def crearcosecha():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cosecha'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cosecha/<string:id>", methods=['GET'])
+def getcosecha(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cosecha/<string:id>", methods=['PUT'])
+def modificarcosecha(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/cosecha/<string:id>", methods=['DELETE'])
+def eliminarcosecha(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
+    response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+##Nutrición
+
+
 @app.route("/nutriciones", methods=['GET'])
 def getnutriciones():
     headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -362,6 +417,36 @@ def eliminarimagen(id):
     data = request.get_json()
     headers = {"Content-Type": "application/json; charset=utf-8"}
     url = dataConfig["url-backend-coffe"] + '/imagen/' + id
+    response = requests.delete(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+#DATOS SENSORES
+
+
+@app.route("/datosias", methods=['GET'])
+def getdatosias():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/datosias'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/datosia/<string:id>", methods=['GET'])
+def datosia(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/datosia/' + id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+@app.route("/datosia/<string:id>", methods=['DELETE'])
+def eliminardatosia(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/datosia/' + id
     response = requests.delete(url, headers=headers, json=data)
     json = response.json()
     return jsonify(json)
