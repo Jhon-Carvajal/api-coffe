@@ -267,12 +267,10 @@ def modificarcosecha(id):
     return jsonify(json)
 
 
-@app.route("/cosecha/<string:id>", methods=['DELETE'])
+@app.route("/cosechae/<string:id>", methods=['DELETE'])
 def eliminarcosecha(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
-    response = requests.delete(url, headers=headers, json=data)
+    url = dataConfig["url-backend-coffe"] + '/cosechae/' + id
+    response = requests.delete(url)
     json = response.json()
     return jsonify(json)
 
