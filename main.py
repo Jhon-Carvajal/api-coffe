@@ -1,3 +1,4 @@
+# Importación de librerías
 import os
 from flask import Flask
 from flask import jsonify
@@ -13,12 +14,14 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
+# Inicialización de la aplicación Flask y configuración de CORS
 app = Flask(__name__)
 cors = CORS(app)
 app.config["JWT_SECRET_KEY"] = "super-secret"
 jwt = JWTManager(app)
 
 
+# Ruta para crear un token JWT de acceso tras la validación del usuario
 @app.route("/login", methods=["POST"])
 def create_token():
     data = request.get_json()
@@ -53,6 +56,7 @@ def before_request_callback():
             return jsonify({"Acceso": "Permission denied"}), 401
 
 
+# Función para limpiar la URL, reemplazando parámetros dinámicos por "?"
 def limpiarURL(url):
     partes = url.split("/")
     for laParte in partes:
@@ -61,6 +65,7 @@ def limpiarURL(url):
     return url
 
 
+# Función para validar si el rol tiene permiso para acceder a la ruta
 def validarPermiso(endPoint, metodo, idRol):
     url = dataConfig["url-backend-security"] + "/permisos-roles/validar-permiso/rol/" + str(idRol)
     tienePermiso = False
@@ -79,7 +84,9 @@ def validarPermiso(endPoint, metodo, idRol):
     return tienePermiso
 
 
-####Redireccionamiento###
+#### Rutas para gestionar usuarios y operaciones CRUD ####
+
+# Ruta para obtener todos los usuarios
 @app.route("/usuarios", methods=['GET'])
 def getusuarios():
     headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -89,6 +96,7 @@ def getusuarios():
     return jsonify(json)
 
 
+# Ruta para crear un nuevo usuario
 @app.route("/usuario", methods=['POST'])
 def crearusuario():
     data = request.get_json()
@@ -99,6 +107,7 @@ def crearusuario():
     return jsonify(json)
 
 
+# Ruta para obtener un usuario específico por ID
 @app.route("/usuario/<string:id>", methods=['GET'])
 def getusuario(id):
     headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -108,6 +117,7 @@ def getusuario(id):
     return jsonify(json)
 
 
+# Ruta para modificar un usuario existente
 @app.route("/usuario/<string:id>", methods=['PUT'])
 def modificarusuario(id):
     data = request.get_json()
@@ -118,6 +128,7 @@ def modificarusuario(id):
     return jsonify(json)
 
 
+# Ruta para eliminar un usuario por ID
 @app.route("/usuario/<string:id>", methods=['DELETE'])
 def eliminarusuario(id):
     data = request.get_json()
@@ -127,252 +138,10 @@ def eliminarusuario(id):
     json = response.json()
     return jsonify(json)
 
-##redireccionamiento a finca
 
+#### Rutas para gestionar datos de sensores ####
 
-@app.route("/fincas", methods=['GET'])
-def getfincas():
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fincas'
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/finca", methods=['POST'])
-def crearfinca():
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/finca'
-    response = requests.post(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/finca/<string:id>", methods=['GET'])
-def getfinca(id):
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/finca/' + id
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/finca/<string:id>", methods=['PUT'])
-def modificarfinca(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/finca/' + id
-    response = requests.put(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/finca/<string:id>", methods=['DELETE'])
-def eliminarfinca(id):
-    url = dataConfig["url-backend-coffe"] + '/finca/' + id
-    response = requests.delete(url)
-    json = response.json()
-    return jsonify(json)
-
-###lote y variedad de cafe ###
-
-
-@app.route("/lotes", methods=['GET'])
-def getlotes():
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lotes'
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/lote", methods=['POST'])
-def crearlote():
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lote'
-    response = requests.post(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/lote/<string:id>", methods=['GET'])
-def getlote(id):
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lote/' + id
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/lote/<string:id>", methods=['PUT'])
-def modificarlote(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lote/' + id
-    response = requests.put(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/lote/<string:id>", methods=['DELETE'])
-def eliminarlote(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/lote/' + id
-    response = requests.delete(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-###cosecha del lote ###
-
-
-@app.route("/cosechas", methods=['GET'])
-def getcosechas():
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cosechas'
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/cosecha", methods=['POST'])
-def crearcosecha():
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cosecha'
-    response = requests.post(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/cosecha/<string:id>", methods=['GET'])
-def getcosecha(id):
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/cosecha/<string:id>", methods=['PUT'])
-def modificarcosecha(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/cosecha/' + id
-    response = requests.put(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/cosechae/<string:id>", methods=['DELETE'])
-def eliminarcosecha(id):
-    url = dataConfig["url-backend-coffe"] + '/cosechae/' + id
-    response = requests.delete(url)
-    json = response.json()
-    return jsonify(json)
-
-##Nutrición
-
-
-@app.route("/nutriciones", methods=['GET'])
-def getnutriciones():
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/nutriciones'
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/nutricion", methods=['POST'])
-def crearnutricion():
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/nutricion'
-    response = requests.post(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/nutricion/<string:id>", methods=['GET'])
-def getnutricion(id):
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/nutricion/<string:id>", methods=['PUT'])
-def modificarnutricion(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
-    response = requests.put(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/nutricion/<string:id>", methods=['DELETE'])
-def eliminarnutricion(id):
-    url = dataConfig["url-backend-coffe"] + '/nutricion/' + id
-    response = requests.delete(url)
-    json = response.json()
-    return jsonify(json)
-
-
-##fumigacion
-@app.route("/fumigaciones", methods=['GET'])
-def getfumigaciones():
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fumigaciones'
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/fumigacion", methods=['POST'])
-def crearfumigacion():
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fumigacion'
-    response = requests.post(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/fumigacion/<string:id>", methods=['GET'])
-def getfumigacion(id):
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fumigacion/' + id
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/fumigacion/<string:id>", methods=['PUT'])
-def modificarfumigacion(id):
-    data = request.get_json()
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/fumigacion/' + id
-    response = requests.put(url, headers=headers, json=data)
-    json = response.json()
-    return jsonify(json)
-
-
-@app.route("/fumigacion/<string:id>", methods=['DELETE'])
-def eliminarfumigacion(id):
-    url = dataConfig["url-backend-coffe"] + '/fumigacion/' + id
-    response = requests.delete(url)
-    json = response.json()
-    return jsonify(json)
-
-
-#DATOS SENSORES
-
-
+# Ruta para obtener los datos de sensores
 @app.route("/datosias", methods=['GET'])
 def getdatosias():
     headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -382,6 +151,7 @@ def getdatosias():
     return jsonify(json)
 
 
+# Ruta para obtener un dato de sensor específico por ID
 @app.route("/datosia/<string:id>", methods=['GET'])
 def datosia(id):
     headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -391,6 +161,7 @@ def datosia(id):
     return jsonify(json)
 
 
+# Ruta para eliminar un dato de sensor por ID
 @app.route("/datosia/<string:id>", methods=['DELETE'])
 def eliminardatosia(id):
     data = request.get_json()
@@ -400,38 +171,10 @@ def eliminardatosia(id):
     json = response.json()
     return jsonify(json)
 
-
-@app.route("/sugerencia", methods=['POST'])
-def generar_sugerencial():
-    # Recibir los datos como texto plano (cadena de números separados por comas)
-    data = request.data.decode('utf-8')  # Ejemplo: "16.67,3.59,161.46"
-
-    # Convertir la cadena en valores separados
-    try:
-        fosforo, nitrogeno, potasio = map(float, data.split(','))
-    except ValueError:
-        return jsonify({"error": "Se requieren tres valores numéricos separados por comas."}), 400
-
-    # Crear un diccionario para enviarlo al backend interno
-    datos = {
-        "fosforo": fosforo,
-        "nitrogeno": nitrogeno,
-        "potasio": potasio
-    }
-
-    # Hacer la solicitud al backend interno con estos datos en formato JSON
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    url = dataConfig["url-backend-coffe"] + '/sugerencia'
-
-    # Enviar los datos como JSON al backend interno
-    response = requests.post(url, headers=headers, json=datos)
-
-    # Devolver la respuesta
-    json_response = response.json()
-    return jsonify(json_response)
+#### Rutas de Machine Learning y Chirpstack ####
 
 
-##ML
+# Ruta para generar una sugerencia basada en los datos de entrada
 @app.route("/sugerenciam", methods=['POST'])
 def generar_sugerencia():
     data = request.get_json()
@@ -442,6 +185,18 @@ def generar_sugerencia():
     return jsonify(json)
 
 
+# Ruta para guardar los valores de sensores recibidos
+@app.route("/valores", methods=['POST'])
+def guardar_datos():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = dataConfig["url-backend-coffe"] + '/valores'
+    response = requests.post(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+
+
+# Ruta de prueba para verificar si el servidor está corriendo
 @app.route("/", methods=['GET'])
 def test():
     json = {}
@@ -449,12 +204,14 @@ def test():
     return jsonify(json)
 
 
+# Función para cargar el archivo de configuración
 def loadFileConfig():
     with open('config.json') as f:
         data = json.load(f)
     return data
 
 
+# Iniciar el servidor Flask
 if __name__ == '__main__':
     dataConfig = loadFileConfig()
     print("Server running : " + "http://" + dataConfig["url-backend"] + ":" + str(dataConfig["port"]))
